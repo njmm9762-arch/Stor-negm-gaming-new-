@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>SYSTEM CORE</title>
+<style>
+body{
+  margin:0;background:#000;color:#00ff9c;
+  font-family:monospace;overflow:hidden;direction:rtl
+}
+#top,#bottom{
+  position:fixed;width:100%;text-align:center;
+  color:#fff;font-weight:bold;z-index:10
+}
+#top{top:0;background:#7a0000;padding:6px}
+#bottom{bottom:0;background:#111;padding:6px;font-size:13px}
+canvas{position:fixed;inset:0;z-index:-1}
+
+.center{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center
+}
+button,input{
+  background:#000;color:#00ff9c;
+  border:1px solid #00ff9c;
+  padding:12px 20px;
+  font-size:18px;margin:6px;
+  box-shadow:0 0 12px #00ff9c
+}
+button:active{transform:scale(.95)}
+.hidden{display:none}
+
+#codeBox{
+  width:90vw;height:60vh;
+  border:1px solid red;
+  padding:10px;
+  overflow:hidden;
+  box-shadow:0 0 25px red;
+  background:rgba(0,0,0,.6)
+}
+</style>
+</head>
+<body>
+
+<div id="top">وهمي</div>
+<div id="bottom">أخلاق مسؤولية النجم</div>
+<canvas id="matrix"></canvas>
+
+<div class="center" id="s1">
+  <button onclick="start()">اضغط للاستهداف</button>
+</div>
+
+<div class="center hidden" id="s2">
+  <div id="codeBox"></div>
+</div>
+
+<div class="center hidden" id="s3">
+  <div>أدخل رقم الهاتف</div>
+  <input id="userPhone" placeholder="1 2 3 4">
+  <button onclick="run()">تنفيذ</button>
+</div>
+
+<script>
+// ===== MATRIX =====
+const c=document.getElementById('matrix'),x=c.getContext('2d');
+function rs(){c.width=innerWidth;c.height=innerHeight}
+onresize=rs;rs();
+const cols=Math.floor(c.width/14),drops=Array(cols).fill(1);
+setInterval(()=>{
+  x.fillStyle='rgba(0,0,0,.15)';
+  x.fillRect(0,0,c.width,c.height);
+  x.fillStyle=Math.random()>0.97?'red':'#00ff9c';
+  x.font='14px monospace';
+  for(let i=0;i<drops.length;i++){
+    x.fillText(Math.random()>0.5?'1':'0',i*14,drops[i]*14);
+    if(drops[i]*14>c.height&&Math.random()>0.98)drops[i]=0;
+    drops[i]++;
+  }
+},30);
+
+// ===== SOUNDS =====
+const clickSound=new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQgAAAAA");
+function click(){clickSound.currentTime=0;clickSound.play();}
+function speak(t){
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang='ar';u.rate=0.9;
+  speechSynthesis.speak(u);
+}
+
+// ===== CODE STREAM =====
+const box=document.getElementById("codeBox");
+function streamCode(){
+  const lines=[
+    "INIT_SYSTEM_CORE();",
+    "LINKING_DATABASES...",
+    "ACCESS_NODE_712...",
+    "DECRYPTING_PACKETS...",
+    "SCANNING_METADATA...",
+    "LOADING_MODULES...",
+    "VERIFY_SIGNAL...",
+    "TRACE_COMPLETE"
+  ];
+  box.innerHTML="";
+  let i=0;
+  const inter=setInterval(()=>{
+    box.innerHTML+=lines[Math.floor(Math.random()*lines.length)]+"<br>";
+    box.scrollTop=box.scrollHeight;
+    if(i++>40)clearInterval(inter);
+  },120);
+}
+
+// ===== FLOW =====
+function start(){
+  click();
+  s1.classList.add("hidden");
+  s2.classList.remove("hidden");
+  streamCode();
+  speak("جار مراجعة البيانات");
+  setTimeout(()=>{
+    s2.classList.add("hidden");
+    s3.classList.remove("hidden");
+    speak("أدخل رقم الهاتف");
+  },5000);
+}
+
+function run(){
+  click();
+  s3.classList.add("hidden");
+  s2.classList.remove("hidden");
+  streamCode();
+
+  const entered=userPhone.value.trim();
+  const real="712-268515";
+
+  if(entered===real){
+    setTimeout(()=>{
+      speak("تم التعرف على البيانات جار التحليل");
+      setTimeout(()=>{
+        speak("لم أستطع التعرف عليه لأن الرقم وهمي");
+      },35000);
+    },4000);
+  }else{
+    setTimeout(()=>{
+      speak("جار التحليل");
+      setTimeout(()=>{
+        speak("لم أستطع التعرف عليه لأن الرقم وهمي");
+      },15000);
+    },4000);
+  }
+}
+</script>
+</body>
+</html>
